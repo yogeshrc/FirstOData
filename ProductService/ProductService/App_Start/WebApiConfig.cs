@@ -18,14 +18,7 @@ namespace ProductService
             ODataModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<Product>("Products");
             config.MapODataServiceRoute(routeName: "ODataRoute", routePrefix: null, model: builder.GetEdmModel());
-
-            //config.MapHttpAttributeRoutes();
-
-            //config.Routes.MapHttpRoute(
-            //    name: "DefaultApi",
-            //    routeTemplate: "api/{controller}/{id}",
-            //    defaults: new { id = RouteParameter.Optional }
-            //);
+            config.MaxTop(null).OrderBy().Filter();
         }
     }
 }
