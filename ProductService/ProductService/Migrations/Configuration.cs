@@ -1,5 +1,6 @@
 namespace ProductService.Migrations
 {
+    using Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -26,6 +27,20 @@ namespace ProductService.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            context.Suppliers.AddOrUpdate<Supplier>(
+                new Supplier { Id = 1, Name = "OReilly" },
+                new Supplier { Id = 2, Name = "Pearson" },
+                new Supplier { Id = 3, Name = "Sams" });
+
+            context.Products.AddOrUpdate<Product>(
+                new Product { Id = 1, Name = "Domain Driven Design", SupplierId = 2, Category = "Design", Price = 700},
+                new Product { Id = 2, Name = "UML in 24 hours", SupplierId= 3, Category = "Design", Price = 195},
+                new Product { Id = 3, Name = "iPhone Game Development", SupplierId = 1, Category = "Programming", Price = 300},
+                new Product { Id = 4, Name = "AI for Game Developers", SupplierId = 1, Category = "Programming", Price = 200 }
+                );
+
+            context.SaveChanges();
         }
     }
 }
