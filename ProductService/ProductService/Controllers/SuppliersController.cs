@@ -17,14 +17,23 @@ namespace ProductService.Controllers
             return _context.Suppliers;
         }
 
-        //[
-        //    HttpPost,
-        //    ODataRoute("Suppliers/Create")
-        //]
-        //public IHttpActionResult Create()
-        //{
-        //    return Ok<bool>(true);
-        //}
+        private const string ProductsParameterNotPassed = "'products' not found in JSON request body. Expected { \"products\": \"<product json object collection>\"}";
+        [
+            HttpPost,
+            ODataRoute("Suppliers({key})/Default.BulkInsert")
+        ]
+        public IHttpActionResult BulkInsert([FromODataUri] int key, ODataActionParameters parameter)
+        {
+            object requestBody;
+            if (!parameter.TryGetValue("products", out requestBody)) return BadRequest(ProductsParameterNotPassed);
+
+            string jsonString = parameter["products"] as string;
+            if (jsonString == null) return BadRequest(ProductsParameterNotPassed);
+
+            var param = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonString);
+
+            return Ok(true);
+        }
 
     }
 }

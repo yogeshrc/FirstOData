@@ -20,12 +20,16 @@ namespace ProductService
             builder.EntitySet<Supplier>("Suppliers");
 
             //Bound function on Product
-            var isWithinBudgetFunc = builder.EntityType<Product>().Function("IsWithinBudget");
-            isWithinBudgetFunc.Parameter<int>("budget");
-            isWithinBudgetFunc.Returns<bool>();
+            builder.EntityType<Product>()
+                .Function("IsWithinBudget")
+                .Returns<bool>()
+                .Parameter<int>("budget");
 
             //Bound action on Supplier
-            //builder.EntityType<Supplier>().Action("Create").Returns<bool>();
+            builder.EntityType<Supplier>()
+                .Action("BulkInsert")
+                .Returns<bool>()
+                .Parameter<string>("products");
 
             config.MapODataServiceRoute(routeName: "ODataRoute", routePrefix: null, model: builder.GetEdmModel());
             config.MaxTop(null).OrderBy().Filter();
