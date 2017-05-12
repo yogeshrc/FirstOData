@@ -18,12 +18,21 @@ namespace ProductService
             ODataModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<Product>("Products");
             builder.EntitySet<Supplier>("Suppliers");
+            builder.EntitySet<City>("Manufacturers");
 
             //Bound function on Product
             builder.EntityType<Product>()
                 .Function("IsWithinBudget")
                 .Returns<bool>()
                 .Parameter<int>("budget");
+
+            //Bound action on Product
+            var applyVatAction = builder.EntityType<Product>()
+                .Action("ApplyVAT")
+                .Returns<int>();
+            applyVatAction.Parameter<int>("vat");
+            applyVatAction.EntityParameter<City>("manufacturedIn");
+            applyVatAction.CollectionEntityParameter<City>("availableCities");
 
             //Bound action on Supplier
             builder.EntityType<Supplier>()
