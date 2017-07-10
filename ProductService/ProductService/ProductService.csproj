@@ -176,6 +176,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\ODataConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ODataExtensions.cs" />
     <Compile Include="Migrations\201705090216220_InitialCreate.cs" />
     <Compile Include="Migrations\201705090216220_InitialCreate.Designer.cs">
       <DependentUpon>201705090216220_InitialCreate.cs</DependentUpon>

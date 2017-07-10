@@ -1,4 +1,5 @@
-﻿using ProductService.Models;
+﻿using ProductService.Helpers;
+using ProductService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,13 @@ namespace ProductService.Controllers
     public class ProductsController: ODataController
     {
         private ProductsContext _database = new ProductsContext();
+
+        //[HttpPost]
+        //[ODataRoute("Products/Default.ApplyGST")]
+        //public int ApplyGST(ODataActionParameters allValues)
+        //{
+        //    return new Random(DateTime.Now.Millisecond).Next(10);
+        //}
 
         private bool ProductExists(int productId)
         {
@@ -86,13 +94,4 @@ namespace ProductService.Controllers
         }
     }
 
-    static class ODataExtensions
-    {
-        public static T Find<T>(this ODataActionParameters parameters, string parameterName)
-        {
-            object output;
-            if (!parameters.TryGetValue(parameterName, out output)) return default(T);
-            return (T)output;
-        }
-    }
 }

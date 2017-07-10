@@ -1,9 +1,11 @@
 ﻿using ProductService.Models;
-using System.Data.Entity;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.OData;
 using System.Web.OData.Routing;
+using ProductService.Helpers;
+using System.Net.Http;
 
 namespace ProductService.Controllers
 {
@@ -17,22 +19,27 @@ namespace ProductService.Controllers
             return _context.Suppliers;
         }
 
-        private const string ProductsParameterNotPassed = "'products' not found in JSON request body. Expected { \"products\": \"<product json object collection>\"}";
+        private const string SuppliersParameterNotPassed = "'suppliers' not found in JSON request body. " +
+                                                    "Expected { \"suppliers\": \"<suppliers list>\"}";
         [
             HttpPost,
-            ODataRoute("Suppliers({key})/Default.BulkInsert")
+            ODataRoute("Suppliers/Default.BulkInsert")
         ]
-        public IHttpActionResult BulkInsert([FromODataUri] int key, ODataActionParameters parameter)
+        public IHttpActionResult BulkInsert(ODataActionParameters parameter)
         {
-            object requestBody;
-            if (!parameter.TryGetValue("products", out requestBody)) return BadRequest(ProductsParameterNotPassed);
+            var suppliersParam = parameter.Find<IEnumerable<string>>("suppliers");
+            if (suppliersParam == null) return BadRequest(SuppliersParameterNotPassed);
 
-            string jsonString = parameter["products"] as string;
-            if (jsonString == null) return BadRequest(ProductsParameterNotPassed);
+            IEnumerable<Supplier> suppliers = suppliersParam.Select(s => new Supplier { Name = s });
+            _context.Suppliers.AddRange(suppliers);
+            _context.SaveChanges();
 
-            var param = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonString);
+            var newSuppliers = new List<Supplier>();
+            foreach (var supplier in _context.Suppliers)
+                if (suppliers.SingleOrDefault(s => s.Name == supplier.Name) != null)
+                    newSuppliers.Add(supplier);
 
-            return Ok(true);
+            return ResponseMessage(Request.CreateResponse(System.Net.HttpStatusCode.Created, newSuppliers));
         }
 
     }
