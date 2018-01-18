@@ -1,6 +1,5 @@
 ﻿using ProductService.Helpers;
 using ProductService.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,13 +13,6 @@ namespace ProductService.Controllers
     {
         private ProductsContext _database = new ProductsContext();
 
-        //[HttpPost]
-        //[ODataRoute("Products/Default.ApplyGST")]
-        //public int ApplyGST(ODataActionParameters allValues)
-        //{
-        //    return new Random(DateTime.Now.Millisecond).Next(10);
-        //}
-
         private bool ProductExists(int productId)
         {
             return _database.Products.Any(product => product.Id == productId);
@@ -33,16 +25,16 @@ namespace ProductService.Controllers
         }
 
         [EnableQuery]
-        public IQueryable<Product> Get()
+        public async Task<IQueryable<Product>> Get()
         {
-            return _database.Products;
+            return await Task.Run(() => _database.Products);
         }
 
         [EnableQuery]
-        public SingleResult<Product> Get([FromODataUri] int key)
+        public async Task<SingleResult<Product>> Get([FromODataUri] int key)
         {
             IQueryable<Product> result = _database.Products.Where(product => product.Id == key);
-            return SingleResult.Create(result);
+            return await Task.Run(() => SingleResult.Create(result));
         }
 
         public async Task<IHttpActionResult> Post(Product product)
@@ -93,5 +85,4 @@ namespace ProductService.Controllers
             return (T)output;
         }
     }
-
 }

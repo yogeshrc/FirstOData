@@ -34,10 +34,16 @@ namespace ProductService.Migrations
                 new Supplier { Id = 3, Name = "Sams" });
 
             context.Products.AddOrUpdate<Product>(
-                new Product { Id = 1, Name = "Domain Driven Design", SupplierId = 2, Category = "Design", Price = 700},
-                new Product { Id = 2, Name = "UML in 24 hours", SupplierId= 3, Category = "Design", Price = 195},
-                new Product { Id = 3, Name = "iPhone Game Development", SupplierId = 1, Category = "Programming", Price = 300},
+                new Product { Id = 1, Name = "Domain Driven Design", SupplierId = 2, Category = "Design", Price = 700 },
+                new Product { Id = 2, Name = "UML in 24 hours", SupplierId = 3, Category = "Design", Price = 195 },
+                new Product { Id = 3, Name = "iPhone Game Development", SupplierId = 1, Category = "Programming", Price = 300 },
                 new Product { Id = 4, Name = "AI for Game Developers", SupplierId = 1, Category = "Programming", Price = 200 }
+                );
+
+            context.Cities.AddOrUpdate<City>(
+                new City { Id = 1, Name = "Pune" },
+                new City { Id = 2, Name = "Mumbai" },
+                new City { Id = 3, Name = "Bedford" }
                 );
 
             context.SaveChanges();

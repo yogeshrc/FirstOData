@@ -9,6 +9,7 @@ namespace ProductService
             // Web API configuration and services
             // Web API routes
             ODataConfig.RegisterODataModel(config);
+
         }
     }
 }
